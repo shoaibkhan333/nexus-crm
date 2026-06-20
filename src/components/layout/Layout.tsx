@@ -9,7 +9,7 @@ import { AnalyticsView } from '../analytics/AnalyticsView'
 import { SettingsView } from '../settings/SettingsView'
 
 export function Layout() {
-  const { view, sidebarCollapsed } = useCRM()
+  const { view, sidebarCollapsed, demoMode } = useCRM()
 
   const views = {
     dashboard: <DashboardView />,
@@ -26,6 +26,11 @@ export function Layout() {
         className="transition-all duration-300"
         style={{ marginLeft: sidebarCollapsed ? 72 : 260 }}
       >
+        {demoMode && (
+          <div className="flex items-center justify-center gap-2 bg-amber-500 px-4 py-2 text-center text-sm font-medium text-white">
+            Demo Mode — sample data only, changes are not saved to cloud.
+          </div>
+        )}
         <Header />
         <main className="p-6">
           <motion.div

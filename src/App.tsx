@@ -4,7 +4,7 @@ import { LoginPage } from './components/auth/LoginPage'
 import { isSupabaseConfigured } from './lib/supabase'
 
 function AppGate() {
-  const { authUser, authLoading } = useCRM()
+  const { authUser, authLoading, demoMode } = useCRM()
 
   if (authLoading) {
     return (
@@ -14,7 +14,7 @@ function AppGate() {
     )
   }
 
-  if (isSupabaseConfigured && !authUser) {
+  if (isSupabaseConfigured && !authUser && !demoMode) {
     return <LoginPage />
   }
 

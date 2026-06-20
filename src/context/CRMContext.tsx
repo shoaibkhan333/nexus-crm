@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react'
 import type { User } from '@supabase/supabase-js'
 import type { Contact, Deal, Notification, UserProfile, View } from '../types'
-import { initialContacts, initialDeals, notifications as initialNotifications, defaultUserProfile } from '../data/mockData'
+import { initialContacts, initialDeals, notifications as initialNotifications, defaultUserProfile, DEMO_ACCOUNT } from '../data/mockData'
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
 import { contactToRow, rowToContact, dealToRow, rowToDeal } from '../lib/dbMappers'
 
@@ -33,6 +33,8 @@ interface CRMContextValue {
   signUp: (email: string, password: string, name: string) => Promise<void>
   signOut: () => Promise<void>
   usingDatabase: boolean
+  demoMode: boolean
+  enterDemoMode: () => void
 }
 
 const CRMContext = createContext<CRMContextValue | null>(null)
@@ -58,6 +60,7 @@ export function CRMProvider({ children }: { children: ReactNode }) {
   const [searchQuery, setSearchQuery] = useState('')
   const [authUser, setAuthUser] = useState<User | null>(null)
   const [authLoading, setAuthLoading] = useState(isSupabaseConfigured)
+  const [demoMode, setDemoMode] = useState(false)
   const [userProfile, setUserProfile] = useState<UserProfile>(() => {
     const saved = localStorage.getItem('crm-user-profile')
     if (saved) return JSON.parse(saved) as UserProfile
@@ -149,9 +152,21 @@ export function CRMProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const signOut = useCallback(async () => {
+    setDemoMode(false)
     if (supabase) await supabase.auth.signOut()
     setContacts(initialContacts)
     setDeals(initialDeals)
+  }, [])
+
+  const enterDemoMode = useCallback(() => {
+    setDemoMode(true)
+    setContacts(initialContacts)
+    setDeals(initialDeals)
+    setUserProfile({
+      name: DEMO_ACCOUNT.name,
+      email: DEMO_ACCOUNT.email,
+      role: DEMO_ACCOUNT.role,
+    })
   }, [])
 
   const addContact = useCallback(async (contact: Omit<Contact, 'id'>) => {
@@ -242,7 +257,7 @@ export function CRMProvider({ children }: { children: ReactNode }) {
         userProfile, updateUserProfile, contacts, addContact, updateContact, deleteContact,
         deals, moveDeal, addDeal, notifications, markNotificationRead, markAllNotificationsRead,
         unreadCount, searchQuery, setSearchQuery, authUser, authLoading, signIn, signUp, signOut,
-        usingDatabase,
+        usingDatabase, demoMode, enterDemoMode,
       }}
     >
       {children}

@@ -114,3 +114,10 @@ export const defaultUserProfile = {
   email: 'alex.morgan@nexuscrm.io',
   role: 'Sales Manager',
 }
+
+export const DEMO_ACCOUNT = {
+  email: 'demo@nexuscrm.io',
+  password: 'Demo@123456',
+  name: 'Demo User',
+  role: 'Sales Manager',
+}

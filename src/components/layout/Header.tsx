@@ -28,6 +28,7 @@ export function Header() {
     userProfile,
     signOut,
     usingDatabase,
+    demoMode,
   } = useCRM()
   const [showNotifications, setShowNotifications] = useState(false)
   const notifRef = useRef<HTMLDivElement>(null)
@@ -130,11 +131,11 @@ export function Header() {
           <div className="hidden sm:block">
             <p className="text-sm font-medium text-slate-900 dark:text-white">{userProfile.name}</p>
             <p className="text-[10px] text-slate-500">
-              {userProfile.role}
+              {demoMode ? 'Demo Account' : userProfile.role}
               {usingDatabase && ' · Cloud sync'}
             </p>
           </div>
-          {isSupabaseConfigured && (
+          {(isSupabaseConfigured || demoMode) && (
             <button
               onClick={signOut}
               title="Sign out"
