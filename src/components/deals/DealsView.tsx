@@ -47,18 +47,22 @@ export function DealsView() {
     setDraggedDeal(dealId)
   }
 
-  function handleDrop(stage: DealStage) {
+  async function handleDrop(stage: DealStage) {
     if (draggedDeal) {
-      moveDeal(draggedDeal, stage)
+      await moveDeal(draggedDeal, stage)
       setDraggedDeal(null)
       setDragOverStage(null)
     }
   }
 
-  function handleAddDeal() {
-    addDeal(form)
-    setForm({ ...emptyDeal, owner: userProfile.name })
-    setModalOpen(false)
+  async function handleAddDeal() {
+    try {
+      await addDeal(form)
+      setForm({ ...emptyDeal, owner: userProfile.name })
+      setModalOpen(false)
+    } catch {
+      alert('Failed to create deal')
+    }
   }
 
   return (

@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from 'react'
 import clsx from 'clsx'
-import { Search, Bell, Moon, Sun, Menu } from 'lucide-react'
+import { Search, Bell, Moon, Sun, Menu, LogOut } from 'lucide-react'
 import { useCRM } from '../../context/CRMContext'
 import { getFirstName, getInitials } from '../../data/mockData'
+import { isSupabaseConfigured } from '../../lib/supabase'
 
 const viewTitles: Record<string, string> = {
   dashboard: 'Dashboard',
@@ -25,6 +26,8 @@ export function Header() {
     markAllNotificationsRead,
     unreadCount,
     userProfile,
+    signOut,
+    usingDatabase,
   } = useCRM()
   const [showNotifications, setShowNotifications] = useState(false)
   const notifRef = useRef<HTMLDivElement>(null)
@@ -126,8 +129,20 @@ export function Header() {
           </div>
           <div className="hidden sm:block">
             <p className="text-sm font-medium text-slate-900 dark:text-white">{userProfile.name}</p>
-            <p className="text-[10px] text-slate-500">{userProfile.role}</p>
+            <p className="text-[10px] text-slate-500">
+              {userProfile.role}
+              {usingDatabase && ' · Cloud sync'}
+            </p>
           </div>
+          {isSupabaseConfigured && (
+            <button
+              onClick={signOut}
+              title="Sign out"
+              className="ml-1 rounded-lg p-1.5 text-slate-400 transition hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-900/20"
+            >
+              <LogOut className="h-4 w-4" />
+            </button>
+          )}
         </div>
       </div>
     </header>

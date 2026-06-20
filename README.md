@@ -7,7 +7,8 @@ A professional, fully interactive Customer Relationship Management (CRM) dashboa
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-06B6D4?logo=tailwindcss&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)
 
-**Live Demo:** _Add your Vercel link here after deployment_
+**Live Demo:** [https://nexus-crm-two-psi.vercel.app/](https://nexus-crm-two-psi.vercel.app/)  
+**GitHub:** [github.com/shoaibkhan333/nexus-crm](https://github.com/shoaibkhan333/nexus-crm)
 
 ---
 
@@ -60,7 +61,7 @@ _Add 3–4 screenshots here after deployment (Dashboard, Contacts, Deals Pipelin
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/nexus-crm.git
+git clone https://github.com/shoaibkhan333/nexus-crm.git
 cd nexus-crm
 
 # Install dependencies
@@ -109,7 +110,7 @@ git init
 git add .
 git commit -m "Initial commit: NexusCRM interactive dashboard"
 git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/nexus-crm.git
+git remote add origin https://github.com/shoaibkhan333/nexus-crm.git
 git push -u origin main
 ```
 
@@ -128,7 +129,7 @@ Replace `YOUR_USERNAME` with your GitHub username.
 
 ### Step 5 — Update README
 
-Copy your live URL and paste it at the top of this README where it says _Add your Vercel link here_.
+Your live demo is already linked at the top of this README.
 
 ---
 
@@ -192,11 +193,11 @@ src/
 
 ## Author
 
-**Your Name** — Aspiring Full-Stack / Frontend Developer
+**Shoaib Khan** — Frontend Developer
 
-- GitHub: [@YOUR_USERNAME](https://github.com/YOUR_USERNAME)
-- LinkedIn: _(your link)_
-- Email: _(your email)_
+- GitHub: [@shoaibkhan333](https://github.com/shoaibkhan333)
+- Live Demo: [nexus-crm-two-psi.vercel.app](https://nexus-crm-two-psi.vercel.app/)
+- LinkedIn: _(add your link)_
 
 ---
 

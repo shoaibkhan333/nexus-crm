@@ -68,14 +68,18 @@ export function ContactsView() {
     setModalOpen(true)
   }
 
-  function handleSave() {
+  async function handleSave() {
     const avatar = form.name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()
-    if (editingContact) {
-      updateContact(editingContact.id, { ...form, avatar })
-    } else {
-      addContact({ ...form, avatar })
+    try {
+      if (editingContact) {
+        await updateContact(editingContact.id, { ...form, avatar })
+      } else {
+        await addContact({ ...form, avatar })
+      }
+      setModalOpen(false)
+    } catch {
+      alert('Failed to save contact')
     }
-    setModalOpen(false)
   }
 
   function toggleSort(key: SortKey) {
