@@ -29,14 +29,22 @@ export function Header() {
     signOut,
     usingDatabase,
     demoMode,
+    authUser,
   } = useCRM()
   const [showNotifications, setShowNotifications] = useState(false)
+  const [showProfileMenu, setShowProfileMenu] = useState(false)
   const notifRef = useRef<HTMLDivElement>(null)
+  const profileRef = useRef<HTMLDivElement>(null)
+
+  const canLogout = isSupabaseConfigured || demoMode || Boolean(authUser)
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
       if (notifRef.current && !notifRef.current.contains(e.target as Node)) {
         setShowNotifications(false)
+      }
+      if (profileRef.current && !profileRef.current.contains(e.target as Node)) {
+        setShowProfileMenu(false)
       }
     }
     document.addEventListener('mousedown', handleClick)
@@ -124,25 +132,43 @@ export function Header() {
           )}
         </div>
 
-        <div className="flex items-center gap-2 rounded-xl border border-slate-200 py-1.5 pl-1.5 pr-3 dark:border-slate-700">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-brand-400 to-brand-600 text-xs font-bold text-white">
-            {getInitials(userProfile.name)}
-          </div>
-          <div className="hidden sm:block">
-            <p className="text-sm font-medium text-slate-900 dark:text-white">{userProfile.name}</p>
-            <p className="text-[10px] text-slate-500">
-              {demoMode ? 'Demo Account' : userProfile.role}
-              {usingDatabase && ' · Cloud sync'}
-            </p>
-          </div>
-          {(isSupabaseConfigured || demoMode) && (
-            <button
-              onClick={signOut}
-              title="Sign out"
-              className="ml-1 rounded-lg p-1.5 text-slate-400 transition hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-900/20"
-            >
-              <LogOut className="h-4 w-4" />
-            </button>
+        <div className="relative" ref={profileRef}>
+          <button
+            onClick={() => canLogout && setShowProfileMenu(!showProfileMenu)}
+            className={clsx(
+              'flex items-center gap-2 rounded-xl border border-slate-200 py-1.5 pl-1.5 pr-3 transition dark:border-slate-700',
+              canLogout && 'hover:bg-slate-50 dark:hover:bg-slate-800',
+            )}
+          >
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-brand-400 to-brand-600 text-xs font-bold text-white">
+              {getInitials(userProfile.name)}
+            </div>
+            <div className="hidden sm:block text-left">
+              <p className="text-sm font-medium text-slate-900 dark:text-white">{userProfile.name}</p>
+              <p className="text-[10px] text-slate-500">
+                {demoMode ? 'Demo Account' : userProfile.role}
+                {usingDatabase && ' · Cloud sync'}
+              </p>
+            </div>
+          </button>
+
+          {showProfileMenu && canLogout && (
+            <div className="absolute right-0 top-full mt-2 w-52 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-800">
+              <div className="border-b border-slate-200 px-4 py-3 dark:border-slate-700">
+                <p className="text-sm font-medium text-slate-900 dark:text-white">{userProfile.name}</p>
+                <p className="truncate text-xs text-slate-500">{userProfile.email}</p>
+              </div>
+              <button
+                onClick={() => {
+                  setShowProfileMenu(false)
+                  signOut()
+                }}
+                className="flex w-full items-center gap-2 px-4 py-3 text-sm font-medium text-red-600 transition hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
+              >
+                <LogOut className="h-4 w-4" />
+                Logout
+              </button>
+            </div>
           )}
         </div>
       </div>

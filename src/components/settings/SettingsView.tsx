@@ -1,8 +1,10 @@
 import { useState } from 'react'
+import { LogOut } from 'lucide-react'
 import { useCRM } from '../../context/CRMContext'
+import { isSupabaseConfigured } from '../../lib/supabase'
 
 export function SettingsView() {
-  const { darkMode, toggleDarkMode, userProfile, updateUserProfile } = useCRM()
+  const { darkMode, toggleDarkMode, userProfile, updateUserProfile, signOut, demoMode, authUser } = useCRM()
   const [form, setForm] = useState(userProfile)
   const [saved, setSaved] = useState(false)
 
@@ -77,6 +79,22 @@ export function SettingsView() {
           </div>
         </div>
       </div>
+
+      {(isSupabaseConfigured || demoMode || authUser) && (
+        <div className="rounded-2xl border border-slate-200/80 bg-white p-6 dark:border-slate-700/80 dark:bg-slate-800/80">
+          <h3 className="text-base font-semibold text-slate-900 dark:text-white">Account</h3>
+          <p className="mt-1 text-sm text-slate-500">
+            {demoMode ? 'You are in demo mode' : 'Sign out of your account'}
+          </p>
+          <button
+            onClick={signOut}
+            className="mt-4 flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-semibold text-red-600 transition hover:bg-red-100 dark:border-red-900 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/30"
+          >
+            <LogOut className="h-4 w-4" />
+            Logout
+          </button>
+        </div>
+      )}
 
       <div className="rounded-2xl border border-slate-200/80 bg-white p-6 dark:border-slate-700/80 dark:bg-slate-800/80">
         <h3 className="text-base font-semibold text-slate-900 dark:text-white">Notifications</h3>
